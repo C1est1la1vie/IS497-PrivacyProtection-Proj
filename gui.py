@@ -9,11 +9,11 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QButtonGroup
     QWidget, QStatusBar, QComboBox, QLineEdit, QTextBrowser, QTextEdit
 
 from base_gui import MainUi
-from cipher import *
-from clipboard_process import *
-from url_record import *
-from identity.dataRecord import *
-from identity.dataManage import *
+# from cipher import *
+# from clipboard_process import *
+# from url_record import *
+# from identity.dataRecord import *
+# from identity.dataManage import *
 
 
 class GUI(MainUi):
@@ -21,9 +21,10 @@ class GUI(MainUi):
         super(GUI, self).__init__()
         # 左边面板按钮触发函数，可以是import进来的，也可以是类内的
         self.left_button_3.clicked.connect(self.click_url_record)
+        self.left_button_4.clicked.connect(self.click_visual_crypt)
         self.left_button_5.clicked.connect(self.click_mar_word)
-        self.left_button_6.clicked.connect(self.click_face_collect)
-        self.left_button_7.clicked.connect(self.click_build_model)
+        # self.left_button_6.clicked.connect(self.click_face_collect)
+        # self.left_button_7.clicked.connect(self.click_build_model)
 
         # 多个窗口切换
         self.stacked_layout = QStackedLayout(self.right_widget)
@@ -51,6 +52,12 @@ class GUI(MainUi):
     def click_url_record(self):  # 浏览记录
         if self.stacked_layout.currentIndex() != 0:
             self.stacked_layout.setCurrentIndex(0)
+
+    def click_visual_crypt(self):       # 4. visual crypto
+        from vc import vc_gui
+        if self.stacked_layout.currentIndex() != 0:
+            self.stacked_layout.setCurrentIndex(0)
+        vc_gui.show_visual_crypt(self)
 
 
 if __name__ == '__main__':

@@ -47,7 +47,7 @@ class MainUi(QtWidgets.QMainWindow):
         self.left_button_2.setObjectName('left_button')
         self.left_button_3 = QtWidgets.QPushButton(qtawesome.icon('fa.film', color='white'), "浏览记录")
         self.left_button_3.setObjectName('left_button')
-        self.left_button_4 = QtWidgets.QPushButton(qtawesome.icon('fa.home', color='white'), "whisper")
+        self.left_button_4 = QtWidgets.QPushButton(qtawesome.icon('fa.home', color='white'), "可视密码")
         self.left_button_4.setObjectName('left_button')
         self.left_button_5 = QtWidgets.QPushButton(qtawesome.icon('fa.download', color='white'), "火星文")
         self.left_button_5.setObjectName('left_button')
