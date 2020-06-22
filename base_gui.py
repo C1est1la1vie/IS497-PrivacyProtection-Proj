@@ -1,6 +1,7 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 import qtawesome
+from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class MainUi(QtWidgets.QMainWindow):
     def __init__(self):
@@ -142,5 +143,3 @@ if __name__ == '__main__':
     gui = MainUi()
     gui.show()
     sys.exit(app.exec_())
-
-

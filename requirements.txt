@@ -1,0 +1,5 @@
+opencv-contrib-python==4.1.0.25
+pillow==6.2.1
+pyqt5==5.15.0
+qtawesome
+qrcode
