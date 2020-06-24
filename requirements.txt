@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 browserhistory==0.1.2
 certifi==2020.4.5.1
 cffi==1.14.0
@@ -22,6 +21,7 @@ PyMySQL==0.9.3
 pyparsing==2.4.7
 PyQt5==5.15.0
 PyQt5-sip==12.8.0
+PyQtWebEngine==5.15.0
 python-dateutil==2.8.1
 pytz==2020.1
 pywin32==227
@@ -34,6 +34,3 @@ shellescape==3.8.1
 six==1.15.0
 telegram==0.0.1
 urllib3==1.25.9
-=======
-
->>>>>>> ffb6e3f10c4a68032bcd28f018c5ad2d4c80ac67

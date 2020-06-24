@@ -1,5 +1,5 @@
-from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QStackedLayout,QWidget
+from PyQt5 import QtCore, QtWebEngineWidgets
 from base_gui import MainUi
 from pwbox import *
 
@@ -12,6 +12,7 @@ class GUI(MainUi):
         self.left_button_3.clicked.connect(self.click_browser_history)
         self.left_button_4.clicked.connect(self.click_visual_crypt)
         self.left_button_5.clicked.connect(self.click_mar_word)
+        self.left_button_8.clicked.connect(self.click_find_device_location)
 
         # 多个窗口切换
         self.stacked_layout = QStackedLayout(self.right_widget)
@@ -38,12 +39,25 @@ class GUI(MainUi):
         self.right_layout5 = QtWidgets.QGridLayout()
         self.main_frame5.setLayout(self.right_layout5)
 
+        self.main_frame6 = QWidget()
+        self.right_layout6 = QtWidgets.QGridLayout()
+        self.main_frame6.setLayout(self.right_layout6)
+
         self.stacked_layout.addWidget(self.main_frame1)
         self.stacked_layout.addWidget(self.main_frame2)
         self.stacked_layout.addWidget(self.main_frame3)
         self.stacked_layout.addWidget(self.main_frame4)
         self.stacked_layout.addWidget(self.main_frame5)
+        self.stacked_layout.addWidget(self.main_frame6)
 
+    def click_find_device_location(self):
+        try:
+            from track import track_gui
+            if self.stacked_layout.currentIndex() != 5:
+                self.stacked_layout.setCurrentIndex(5)
+            track_gui.find_device_location(self)
+        except Exception as err:
+            print(err)
 
     def click_visual_crypt(self):       # 4. visual crypto
         from vc import vc_gui
