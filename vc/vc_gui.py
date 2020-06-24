@@ -60,9 +60,9 @@ def vcdec(obj):
 
 
 def qrdec(obj):
-    import cv2 as cv
+    from cv2 import imread
     decoder = qr_coder.qrDecoder()
-    imgarr = cv.imread("./temp/out.png")
+    imgarr = imread("./temp/out.png")
     codeinfo = decoder.dec_str(decoder.process(imgarr))
     obj.labl_str = QtWidgets.QLabel(codeinfo)
     obj.main_layout.addWidget(obj.labl_str, 7, 5, 2, 4)
