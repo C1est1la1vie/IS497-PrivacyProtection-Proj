@@ -1,6 +1,6 @@
 # by nyLiao, 2020
 
-import cv2 as cv
+from cv2 import blur, threshold, QRCodeDetector, bitwise_not, THRESH_BINARY_INV
 from PIL import Image
 
 
@@ -25,14 +25,14 @@ class qrDecoder(object):
         super(qrDecoder, self).__init__()
 
     def process(self, imgarr):
-        imgarr_blr = cv.blur(imgarr, ksize=(3, 3))
-        _, dst = cv.threshold(imgarr_blr, 150, 255, cv.THRESH_BINARY_INV)
+        imgarr_blr = blur(imgarr, ksize=(3, 3))
+        _, dst = threshold(imgarr_blr, 150, 255, THRESH_BINARY_INV)
         return dst
 
     def dec_str(self, imgarr):
-        qrcoder = cv.QRCodeDetector()
+        qrcoder = QRCodeDetector()
         codeinfo, points, straight_qrcode = qrcoder.detectAndDecode(imgarr)
         if codeinfo == '':
-            imgarr = cv.bitwise_not(imgarr)
+            imgarr = bitwise_not(imgarr)
             codeinfo, points, straight_qrcode = qrcoder.detectAndDecode(imgarr)
         return codeinfo
