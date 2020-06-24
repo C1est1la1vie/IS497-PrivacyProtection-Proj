@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 browserhistory==0.1.2
 certifi==2020.4.5.1
 cffi==1.14.0
@@ -33,3 +34,6 @@ shellescape==3.8.1
 six==1.15.0
 telegram==0.0.1
 urllib3==1.25.9
+=======
+
+>>>>>>> ffb6e3f10c4a68032bcd28f018c5ad2d4c80ac67
