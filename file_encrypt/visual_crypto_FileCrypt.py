@@ -2,9 +2,12 @@
 
 import os
 import random
+
 from PIL import Image
 
+
 class cryptCoder(object):
+
     def __init__(self, path_dir="./", name_msg="msg.png", name_sct="sct.png",
                  name_cph="cph.png", name_out="out.png"):
         super(cryptCoder, self).__init__()

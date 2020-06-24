@@ -1,12 +1,13 @@
+import time
 import socket
 import os
-import time
+import sys 
 
 host = "127.0.0.1"
 port = 23456
 
 WorkPath = os.getcwd()
-
+WorkPath = WorkPath+'\\file_encrypt'
 def Upload(host,post,fileName):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((host,port))
@@ -33,7 +34,6 @@ def Download(host,port,fileName):
     message = 'Download '+ fileName
     s.send(message.encode())
     #File = s.recv(1024).decode()
-    WorkPath = os.getcwd()
     os.chdir(WorkPath)
     with open(fileName, 'wb') as f:
         while True:

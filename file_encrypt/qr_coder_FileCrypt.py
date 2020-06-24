@@ -18,7 +18,6 @@ class qrEncoder(object):
         img = self._pil2pil(qrcode.make(s))
         return img
 
-
 class qrDecoder(object):
     def __init__(self):
         super(qrDecoder, self).__init__()

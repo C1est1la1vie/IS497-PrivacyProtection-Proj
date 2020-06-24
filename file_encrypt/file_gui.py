@@ -5,6 +5,9 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QPushButton,QListWidget,QFileDialog
 import time
 from file_encrypt.FileClient import *
+
+WorkPath = os.getcwd()
+#print(WorkPath,"file_gui")
 def file_encrypt_gui(self):
     try:
         self.FileRecorder = []
@@ -75,13 +78,13 @@ def FileToPublic(self):
             DirPath,Filename = item_text.rsplit("/",1)
             self.AES.decrypt(DirPath,Filename)
         except Exception:
-            #raise
             QtWidgets.QMessageBox.warning(self, "错误", "出现未知错误：该文件可能已被修改，无法还原，自动从系统中删除")
+            #raise
         finally:
             self.FileRecorder.remove(item_text)
             self.Filelist.takeItem(self.Filelist.row(item))
             os.chdir(WorkPath)
-            print(os.getcwd())
+            #print(os.getcwd())
             with open("FileRecord","w") as f:
                 for i in self.FileRecorder:
                     f.write(i + '\n')

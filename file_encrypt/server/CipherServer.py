@@ -42,7 +42,6 @@ class FileServer(threading.Thread):
     def Send(self, message, conn):
         name = message.split()[1]                               # 获取第二个参数(文件名)
         fileName = name
-
         try:
             with open(fileName, 'rb') as f:    
                 while True:
@@ -53,7 +52,6 @@ class FileServer(threading.Thread):
             time.sleep(0.1)                                          # 延时确保文件发送完整
             conn.send('EOF'.encode())
         except Exception:
-            print(fileName)
             print("No such file, please check the file name")
 
     # 判断输入的命令并执行对应的函数
