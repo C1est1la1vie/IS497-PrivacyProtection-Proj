@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QStackedLayout,QWidget
 from PyQt5 import QtCore, QtWebEngineWidgets
 from base_gui import MainUi
+from file_encrypt.FileCrypt import AES_128
 from pwbox import *
 
 class GUI(MainUi):
@@ -33,7 +34,7 @@ class GUI(MainUi):
         self.right_layout4 = QtWidgets.QGridLayout()
         self.main_frame4.setLayout(self.right_layout4)
         self.FileRecorder = []
-        # self.AES = AES_128()
+        self.AES = AES_128()
 
         self.main_frame5 = QWidget()
         self.right_layout5 = QtWidgets.QGridLayout()
