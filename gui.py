@@ -1,6 +1,7 @@
 from file_encrypt.FileCrypt import AES_128
 from base_gui import MainUi
 from PyQt5 import QtWidgets
+from PyQt5 import QtCore, QtWebEngineWidgets
 from PyQt5.QtWidgets import QPushButton, QLineEdit, QStackedLayout
 from identity.cipher import *
 from register.dataRecord import *
