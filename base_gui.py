@@ -1,7 +1,6 @@
+from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 import qtawesome
-from PyQt5 import QtCore, QtGui, QtWidgets
-
 
 class MainUi(QtWidgets.QMainWindow):
     def __init__(self):
@@ -32,14 +31,16 @@ class MainUi(QtWidgets.QMainWindow):
         self.left_visit = QtWidgets.QPushButton("")  # 空白按钮
         self.left_mini = QtWidgets.QPushButton("")  # 最小化按钮
 
-        self.left_label_1 = QtWidgets.QPushButton("隐私保护")
+        self.left_label_1 = QtWidgets.QPushButton("身份隐私")
         self.left_label_1.setObjectName('left_label')
-        self.left_label_2 = QtWidgets.QPushButton("加密通信")
+        self.left_label_2 = QtWidgets.QPushButton("内容隐私")
         self.left_label_2.setObjectName('left_label')
-        self.left_label_3 = QtWidgets.QPushButton("系统安全")
+        self.left_label_3 = QtWidgets.QPushButton("通信隐私")
         self.left_label_3.setObjectName('left_label')
-        self.left_label_4 = QtWidgets.QPushButton("联系与帮助")
+        self.left_label_4 = QtWidgets.QPushButton("设备安全")
         self.left_label_4.setObjectName('left_label')
+        self.left_label_5 = QtWidgets.QPushButton("添加用户")
+        self.left_label_5.setObjectName('left_label')
 
         self.left_button_1 = QtWidgets.QPushButton(qtawesome.icon('fa.music', color='white'), "密码簿")
         self.left_button_1.setObjectName('left_button')
@@ -51,36 +52,39 @@ class MainUi(QtWidgets.QMainWindow):
         self.left_button_4.setObjectName('left_button')
         self.left_button_5 = QtWidgets.QPushButton(qtawesome.icon('fa.download', color='white'), "火星文")
         self.left_button_5.setObjectName('left_button')
+        self.left_button_8 = QtWidgets.QPushButton(qtawesome.icon('fa.comment', color='white'), "防盗追踪")
+        self.left_button_8.setObjectName('left_button')
         self.left_button_6 = QtWidgets.QPushButton(qtawesome.icon('fa.heart', color='white'), "人脸采集")
         self.left_button_6.setObjectName('left_button')
         self.left_button_7 = QtWidgets.QPushButton(qtawesome.icon('fa.question', color='white'), "建立模型")
         self.left_button_7.setObjectName('left_button')
-        self.left_button_8 = QtWidgets.QPushButton(qtawesome.icon('fa.comment', color='white'), "防盗追踪")
-        self.left_button_8.setObjectName('left_button')
-        self.left_button_9 = QtWidgets.QPushButton(qtawesome.icon('fa.star', color='white'), "关注我们")
+        self.left_button_9 = QtWidgets.QPushButton(qtawesome.icon('fa.star', color='white'), "设置密码")
         self.left_button_9.setObjectName('left_button')
-        self.left_button_10 = QtWidgets.QPushButton(qtawesome.icon('fa.question', color='white'), "反馈建议")
-        self.left_button_10.setObjectName('left_button')
 
         self.left_xxx = QtWidgets.QPushButton(" ")
 
         self.left_layout.addWidget(self.left_mini, 0, 0, 1, 1)
         self.left_layout.addWidget(self.left_close, 0, 2, 1, 1)
         self.left_layout.addWidget(self.left_visit, 0, 1, 1, 1)
+
         self.left_layout.addWidget(self.left_label_1, 1, 0, 1, 3)
         self.left_layout.addWidget(self.left_button_1, 2, 0, 1, 3)
-        self.left_layout.addWidget(self.left_button_2, 3, 0, 1, 3)
-        self.left_layout.addWidget(self.left_button_3, 4, 0, 1, 3)
-        self.left_layout.addWidget(self.left_label_2, 5, 0, 1, 3)
-        self.left_layout.addWidget(self.left_button_4, 6, 0, 1, 3)
-        self.left_layout.addWidget(self.left_button_5, 7, 0, 1, 3)
-        self.left_layout.addWidget(self.left_label_3, 8, 0, 1, 3)
-        self.left_layout.addWidget(self.left_button_6, 9, 0, 1, 3)
-        self.left_layout.addWidget(self.left_button_7, 10, 0, 1, 3)
-        self.left_layout.addWidget(self.left_button_8, 11, 0, 1, 3)
-        self.left_layout.addWidget(self.left_label_4, 12, 0, 1, 3)
-        self.left_layout.addWidget(self.left_button_9, 13, 0, 1, 3)
-        self.left_layout.addWidget(self.left_button_10, 14, 0, 1, 3)
+
+        self.left_layout.addWidget(self.left_label_2, 3, 0, 1, 3)
+        self.left_layout.addWidget(self.left_button_2, 4, 0, 1, 3)
+        self.left_layout.addWidget(self.left_button_3, 5, 0, 1, 3)
+
+        self.left_layout.addWidget(self.left_label_3, 6, 0, 1, 3)
+        self.left_layout.addWidget(self.left_button_4, 7, 0, 1, 3)
+        self.left_layout.addWidget(self.left_button_5, 8, 0, 1, 3)
+
+        self.left_layout.addWidget(self.left_label_4, 9, 0, 1, 3)
+        self.left_layout.addWidget(self.left_button_8, 10, 0, 1, 3)
+
+        self.left_layout.addWidget(self.left_label_5, 11, 0, 1, 3)
+        self.left_layout.addWidget(self.left_button_6, 12, 0, 1, 3)
+        self.left_layout.addWidget(self.left_button_7, 13, 0, 1, 3)
+        self.left_layout.addWidget(self.left_button_9, 14, 0, 1, 3)
 
         self.left_close.setFixedSize(15, 15)  # 设置关闭按钮的大小
         self.left_visit.setFixedSize(15, 15)  # 设置按钮大小
@@ -132,10 +136,10 @@ class MainUi(QtWidgets.QMainWindow):
                             }
                         ''')
 
-        # self.setWindowOpacity(0.9)  # 设置窗口透明度
-        # self.setAttribute(QtCore.Qt.WA_TranslucentBackground)  # 设置窗口背景透明
+        self.setWindowOpacity(0.9)  # 设置窗口透明度
+        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)  # 设置窗口背景透明
         self.main_layout.setSpacing(0)
-        # self.setWindowFlag(QtCore.Qt.FramelessWindowHint)  # 隐藏边框
+        self.setWindowFlag(QtCore.Qt.FramelessWindowHint)  # 隐藏边框
 
 
 if __name__ == '__main__':
@@ -143,3 +147,5 @@ if __name__ == '__main__':
     gui = MainUi()
     gui.show()
     sys.exit(app.exec_())
+
+

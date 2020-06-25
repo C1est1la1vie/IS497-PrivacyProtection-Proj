@@ -1,8 +1,15 @@
 # IS497-PrivacyProtection-Proj
 Final project of IS497: PC Personal Privacy Protection System
 
-1. identification part hasn't been included into proj yet.
+1. a little problem for passwordbox function
 
-2. a little problem for the background work of passwordbox & file encryption.
+2. file encryption should os.chdir back
 
-3. pc-track part is supposed to be tested when the cloud server config is done.
+3. cloud server of pc_track part is under testing 
+
+4. you can write your own part in this proj deployment document
+https://notes.sjtu.edu.cn/xCXmytduTtqonLEyKoAyKg
+
+In this version, you can use .py in folder register to add user to the part,which will lately be packed into a register.exe
+ (include datarecord,datamanage,insert sno & password into sql )
+so as to login or you can directly run gui.py to see the main frame

@@ -130,11 +130,9 @@ def period_mode_on(self):
     self.t1 = threading.Thread(target=self.period_task, args=(period, choice))
     self.t1.start()
 
-
 def period_mode_off(self):
     self.bt_on.setEnabled(True)
     self.flag_period_mode = 1
-
 
 def period_task(self, period, choice):
     while (True):
@@ -169,7 +167,6 @@ def del_key_word(self):
         except Exception as err:
             print(err)
             self.text_browser.setText(browser + "中没有浏览记录")
-
 
     except Exception as err:
         print(err)
