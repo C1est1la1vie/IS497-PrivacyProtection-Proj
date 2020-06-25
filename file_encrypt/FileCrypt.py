@@ -8,19 +8,15 @@ from PIL import Image
 from file_encrypt.FileClient import *
 import chardet
 
-WorkPath = os.getcwd()
-WorkPath = WorkPath+'\\file_encrypt'
-
 class AES_128():
 
     def __init__(self):
 
         Download("127.0.0.1",23456,"cph.png")
-        os.chdir(WorkPath)
-        self.vc2qr("./sct.png", "./cph.png")
-        os.remove("./cph.png")
-        self.key = self.qr2str("./out.png")  # 密钥长度必须为16、24或32位，分别对应AES-128、AES-192和AES-256
-        os.remove("./out.png")
+        self.vc2qr(".\\file_encrypt\\sct.png", ".\\file_encrypt\\cph.png")
+        os.remove(".\\file_encrypt\\cph.png")
+        self.key = self.qr2str(".\\file_encrypt\\out.png")  # 密钥长度必须为16、24或32位，分别对应AES-128、AES-192和AES-256
+        os.remove(".\\file_encrypt\\out.png")
         self.aes = AES.new(str.encode(self.key), AES.MODE_ECB)
         self.buffer = ""
 
@@ -39,7 +35,7 @@ class AES_128():
         img_cph = Image.open(img_cph)
         #
         img_out = cryptCoder.get_out(img_sct, img_cph)
-        img_out.save("./out.png")
+        img_out.save(".\\file_encrypt\\out.png")
         return img_out
     # 补足字符串长度为16的倍数
     def add_to_16(self,s):
@@ -49,8 +45,8 @@ class AES_128():
         return s  # 返回bytes
  
     def encrypt(self,DirPath,Filename):
-        os.chdir(DirPath)
-        with open (Filename,"rb") as r:
+        file = DirPath+"\\"+Filename
+        with open (file,"rb") as r:
             #try : 
             a = r.read()
             encrypted_text = base64.encodebytes(self.aes.encrypt(self.add_to_16(a)))
@@ -58,13 +54,13 @@ class AES_128():
             
         r.close()
         if self.buffer != "":
-            with open (Filename,"wb") as r:
+            with open (file,"wb") as r:
                 r.write(self.buffer)
                 self.buffer = ""
             r.close()
     def decrypt(self,DirPath,Filename):
-        os.chdir(DirPath)
-        with open (Filename,"rb") as r:
+        file = DirPath + "\\" + Filename
+        with open (file,"rb") as r:
             #try:
             decrypted_text = self.aes.decrypt(base64.decodebytes(r.read())).rstrip(b'\0')
             #print(decrypted_text)
@@ -72,7 +68,7 @@ class AES_128():
 
         r.close()
         if self.buffer != "":
-            with open (Filename,"wb") as r:
+            with open (file,"wb") as r:
                 r.write(self.buffer)
                 self.buffer = ""
             r.close()

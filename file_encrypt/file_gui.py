@@ -6,13 +6,11 @@ from PyQt5.QtWidgets import QPushButton,QListWidget,QFileDialog
 import time
 from file_encrypt.FileClient import *
 
-WorkPath = os.getcwd()
-#print(WorkPath,"file_gui")
 def file_encrypt_gui(self):
     try:
         self.FileRecorder = []
         Download("127.0.0.1",23456,"FileRecord")
-        f = open("FileRecord","r")
+        f = open(".\\file_encrypt\\FileRecord","r")
         while 1:
             a = f.readline().strip()
             if a != "":
@@ -36,6 +34,7 @@ def file_encrypt_gui(self):
             self.Filelist.addItem(i)
     except Exception as err:
         print(err)
+        ##raise
 
 def UseFile(self):
     try:
@@ -43,19 +42,18 @@ def UseFile(self):
         DirPath,Filename = item.rsplit("/",1)
         self.AES.decrypt(DirPath,Filename)
         time.sleep(0.1)
-        os.startfile(Filename)
+        os.startfile(item)
         time.sleep(0.3)
         self.AES.encrypt(DirPath,Filename)
     except Exception:
-        #raise
+        ##raise
         QtWidgets.QMessageBox.warning(self, "错误", "出现未知错误：该文件无法被复原")
 
 def FileToPrivate(self):
     try:
         CompleteFilePath = QFileDialog.getOpenFileName()[0]
         if CompleteFilePath not in self.FileRecorder:
-            os.chdir(WorkPath)
-            with open("FileRecord","a") as f:
+            with open(".\\file_encrypt\\FileRecord","a") as f:
                 a = f.write(CompleteFilePath + "\n")
             Upload("127.0.0.1",23456,"FileRecord")
             f.close()
@@ -63,9 +61,10 @@ def FileToPrivate(self):
             self.AES.encrypt(DirPath,Filename)
             self.Filelist.addItem(CompleteFilePath)
             self.FileRecorder.append(CompleteFilePath)
+            #print(self.FileRecorder)
     except Exception:
         QtWidgets.QMessageBox.warning(self, "错误", "未选择文件或该文件的类型不支持加密")
-        #raise
+        ##raise
 
 def FileToPublic(self):
     try:
@@ -79,13 +78,11 @@ def FileToPublic(self):
             self.AES.decrypt(DirPath,Filename)
         except Exception:
             QtWidgets.QMessageBox.warning(self, "错误", "出现未知错误：该文件可能已被修改，无法还原，自动从系统中删除")
-            #raise
+            ##raise
         finally:
             self.FileRecorder.remove(item_text)
             self.Filelist.takeItem(self.Filelist.row(item))
-            os.chdir(WorkPath)
-            #print(os.getcwd())
-            with open("FileRecord","w") as f:
+            with open(".\\file_encrypt\\FileRecord","w") as f:
                 for i in self.FileRecorder:
                     f.write(i + '\n')
             Upload("127.0.0.1",23456,"FileRecord")
