@@ -1,10 +1,10 @@
-import identity.dlib
+import dlib
 from PyQt5.QtCore import QThread
 from PyQt5.QtWidgets import QMainWindow
 from identity.pass_login import Ui_MainWindow
 import logging.config
+import logging.config
 import winsound
-from PyQt5 import QtCore, QtWebEngineWidgets
 import time
 from gui import *
 from datetime import datetime
@@ -45,7 +45,7 @@ class CoreUI(QMainWindow):
         self.timer.timeout.connect(self.updateFrame)
 
         # 报警系统
-        self.alarmSignalThreshold = 10
+        self.alarmSignalThreshold = 3
         self.panalarmThread = threading.Thread(target=self.recieveAlarm, daemon=True)
         self.isBellEnabled = True
 
@@ -56,7 +56,14 @@ class CoreUI(QMainWindow):
 
         self.startWebcam()
         self.isBellEnabled = True
-        self.timeThreshold = 6
+        self.timeThreshold = 4
+
+    def goto_password_verify(self):
+        ui.show()
+        try:
+            window.close()
+        except Exception as err:
+            print(err)
 
     # 检查数据库状态
     def initDb(self):
@@ -111,6 +118,24 @@ class CoreUI(QMainWindow):
                 self.timer.start(5)  # 启动定时器
                 self.panalarmThread.start()  # 启动报警系统线程
 
+        else:
+            text = '如果关闭摄像头，须重启程序才能再次打开。'
+            informativeText = '<b>是否继续？</b>'
+            ret = CoreUI.callDialog(QMessageBox.Warning, text, informativeText, QMessageBox.Yes | QMessageBox.No,
+                                    QMessageBox.No)
+
+            if ret == QMessageBox.Yes:
+                self.faceProcessingThread.stop()
+                if self.cap.isOpened():
+                    if self.timer.isActive():
+                        self.timer.stop()
+                    self.cap.release()
+
+                self.realTimeCaptureLabel.clear()
+                self.realTimeCaptureLabel.setText('<font color=red>摄像头未开启</font>')
+                self.startWebcamButton.setText('摄像头已关闭')
+                self.startWebcamButton.setEnabled(False)
+                self.startWebcamButton.setIcon(QIcon())
 
     # 定时器，实时更新画面
     def updateFrame(self):
@@ -155,15 +180,14 @@ class CoreUI(QMainWindow):
             jobs = []
             time.sleep(1)
             self.count_time +=1
-
             if self.count_time>self.timeThreshold and self.alarmQueue.qsize() <= self.alarmSignalThreshold:
                 self.pushButton.setEnabled(True)
+                self.cap.release()
                 self.alarm_flag=1
                 self.log_flag=1
                 self.timer.stop()
-                self.cap.release()
-                self.faceProcessingThread.stop()
                 self.logQueue.put('人脸认证通过，请按进入系统按钮')
+                self.faceProcessingThread.stop()
 
             if self.alarmQueue.qsize() > self.alarmSignalThreshold:  # 若报警信号触发超出既定计数，进行报警
                 if not os.path.isdir('./identity/unknown'):
@@ -238,12 +262,6 @@ class CoreUI(QMainWindow):
             self.cap.release()
         event.accept()
 
-    def goto_password_verify(self):
-        ui.show()
-        try:
-            window.close()
-        except Exception as err:
-            print(err)
 # OpenCV线程
 class FaceProcessingThread(QThread):
     def __init__(self):
@@ -272,6 +290,7 @@ class FaceProcessingThread(QThread):
 
         # 人脸跟踪器字典初始化
         faceTrackers = {}
+
         isTrainingDataLoaded = False
         isDbConnected = False
 
