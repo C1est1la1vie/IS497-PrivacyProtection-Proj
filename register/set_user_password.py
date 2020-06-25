@@ -3,7 +3,7 @@ import datetime
 import hashlib
 # 打开数据库连接
 def mysql_insert_data(password_get,sno_get):
-    db = pymysql.connect("localhost", "root", "123", "clients", charset='utf8' )
+    db = pymysql.connect("39.101.187.212", "root", "12345678", "clients", charset='utf8' )
     # 使用cursor()方法获取操作游标
     cursor = db.cursor()
     # 使用execute方法执行SQL语句
