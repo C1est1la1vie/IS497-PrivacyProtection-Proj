@@ -1,93 +1,13 @@
 import sys
-from etc.cryp import *
-from etc.mainwindow import *
-from PyQt5 import QtCore, QtGui, QtWidgets
-sys.path.append("./etc/")
+sys.path.append("./passwordbook/")
+from core import *
+from mainmenu import *
 
 class Ui_createpwd(object):
-
-    def retranslateUi(self, createpwd):
-        _translate = QtCore.QCoreApplication.translate
-        createpwd.setWindowTitle("添加新密码")
-        self.label.setText("添加新密码")
-        self.label_2.setText("网址")
-        self.label_3.setText("用户名")
-        self.label_4.setText("密码")
-        self.label_5.setText("备注")
-        self.pushSave.setText("保存")
-
-
-    def reject(self):
-        core.sessioncheck()
-        self.close()
-        return False
-        
-
-    def newpassword(self):
-        core.sessioncheck()        
-        project = self.lineProject.text()        
-        username = self.lineUsername.text()
-        password = self.linePassword.text()
-        notes = self.lineNotes.text()
-        if project == '':
-            self.label_Msg.setText("网址为空")
-            self.repaint()
-            return None
-        if username == '':
-            self.label_Msg.setText("用户名为空")
-            self.repaint()
-            return None
-        if password == '':
-            self.label_Msg.setText("密码为空")
-            self.repaint()
-            return None
-
-
-        p = core.hash_password(password)
-        
-
-        date = core.now()
-        df = pd.read_csv(filetemp, header=0)
-        did = df['序号']
-        nid = len(df)              
-        for idd in did:
-            if idd == nid:
-                nid = 1+nid
-            else:
-                nid = nid
-
-
-        ndate = "{}/{}/{}".format(date[1],date[2], date[3])
-        df.loc[nid] = [nid, project, username, p, notes, ndate]
-
-        try:
-            with open(filetemp, 'w') as f:
-                df.to_csv(f,sep=',', encoding=encoding,index=False, mode='a')
-                f.close()
-
-                admpwd = df['密码'][0]
-                password = core.detemppwd(admpwd)
-                keyfile = core.decrypt(password)        
-                pyAesCrypt.encryptFile(filetemp, filename, keyfile, bufferSize) 
-                
-                self.label_Msg.setText("")
-                self.lineProject.setText("")
-                self.lineUsername.setText("")
-                self.linePassword.setText("")
-                self.lineNotes.setText("")
-                core.sessioncheck()
-                self.repaint()
-        except:            
-            self.label_Msg.setText("")
-            self.repaint()
-            core.sessioncheck()
-        self.close()
-        return None
-
     def setupUi(self, createpwd):
         createpwd.setObjectName("createpwd")
         createpwd.resize(354, 290)
-        createpwd.setWindowModality(QtCore.Qt.ApplicationModal)
+        createpwd.setWindowModality(QtCore.Qt.ApplicationModal)        
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -128,7 +48,7 @@ class Ui_createpwd(object):
         font.setPointSize(18)
         self.label_5.setFont(font)
         self.label_5.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.label_5.setObjectName("label_5")
+        self.label_5.setObjectName("label_5")        
         self.lineProject = QtWidgets.QLineEdit(createpwd)
         self.lineProject.setGeometry(QtCore.QRect(110, 50, 201, 30))
         self.lineProject.setFocusPolicy(QtCore.Qt.WheelFocus)
@@ -137,13 +57,11 @@ class Ui_createpwd(object):
         self.lineUsername.setGeometry(QtCore.QRect(110, 90, 201, 30))
         self.lineUsername.setFocusPolicy(QtCore.Qt.WheelFocus)
         self.lineUsername.setObjectName("lineUsername")
-
         self.linePassword = QtWidgets.QLineEdit(createpwd)
         self.linePassword.setGeometry(QtCore.QRect(110, 130, 201, 30))
         self.linePassword.setFocusPolicy(QtCore.Qt.WheelFocus)
         self.linePassword.setEchoMode(QtWidgets.QLineEdit.PasswordEchoOnEdit)
         self.linePassword.setObjectName("linePassword")
-
         self.lineNotes = QtWidgets.QLineEdit(createpwd)
         self.lineNotes.setGeometry(QtCore.QRect(110, 170, 201, 30))
         self.lineNotes.setFocusPolicy(QtCore.Qt.WheelFocus)
@@ -155,7 +73,6 @@ class Ui_createpwd(object):
 
         self.label_Msg = QtWidgets.QLabel(createpwd)
         self.label_Msg.setGeometry(QtCore.QRect(0, 210, 351, 41))
-
         font = QtGui.QFont()
         font.setPointSize(18)
         self.label_Msg.setFont(font)
@@ -165,4 +82,97 @@ class Ui_createpwd(object):
 
         self.retranslateUi(createpwd)
         QtCore.QMetaObject.connectSlotsByName(createpwd)
+        ### Action Buttons
         self.pushSave.clicked.connect(self.newpassword)
+
+        
+    def retranslateUi(self, createpwd):
+        _translate = QtCore.QCoreApplication.translate
+        createpwd.setWindowTitle("添加新密码")
+        self.label.setText("添加新密码")
+        self.label_2.setText("网址")
+        self.label_3.setText("用户名")
+        self.label_4.setText("密码")
+        self.label_5.setText("备注")
+        self.pushSave.setText("保存")
+
+        '''_translate = QtCore.QCoreApplication.translate
+        createpwd.setWindowTitle(_translate("createpwd", CPWT))
+        self.label.setText(_translate("createpwd", CPNP))
+        self.label_2.setText(_translate("createpwd", CPPN))
+        self.label_3.setText(_translate("createpwd", LUSR))
+        self.label_4.setText(_translate("createpwd", LPWD))
+        self.label_5.setText(_translate("createpwd", CPNO))
+        self.pushSave.setText(_translate("createpwd", CPSP))'''
+        #self.pushClear.setText(_translate("createpwd", CPCA))
+        #self.pushClose.setText(_translate("createpwd", CPCD))
+        #self.toolButtonGenerate.setText(_translate("createpwd", "..."))
+    
+    ### CLOSE DIALOG
+    def reject(self):
+        core.sessioncheck()
+        self.close()
+        return False
+    
+
+    ### CREATE NEW PASSWOD
+    def newpassword(self):
+        core.sessioncheck()        
+        website = self.lineProject.text()        
+        username = self.lineUsername.text()
+        password = self.linePassword.text()
+        notes = self.lineNotes.text()
+        if website == '':
+            self.label_Msg.setText("网址为空")
+            self.repaint()
+            return None
+        if username == '':
+            self.label_Msg.setText("用户名为空")
+            self.repaint()
+            return None
+        if password == '':
+            self.label_Msg.setText("密码为空")
+            self.repaint()
+            return None
+
+        ### Hash password
+        p = core.hash_password(password)
+        
+        ### Check duplicates IDs
+        date = core.now()
+        df = pd.read_csv(filetemp, header=0)
+        did = df['id']
+        nid = len(df)              
+        for idd in did:
+            if idd == nid:
+                nid = 1+nid
+            else:
+                nid = nid
+
+        ### Create date
+        ndate = "{}/{}/{}".format(date[1],date[2], date[3])
+        df.loc[nid] = [nid, website, username, p, notes, ndate]
+        ### Save the changes
+        try:
+            with open(filetemp, 'w') as f:
+                df.to_csv(f,sep=',', encoding=encoding,index=False, mode='a')
+                f.close()
+                ### CREATE ENC KEY for FILE AND HASH                               
+                admpwd = df['password'][0]
+                password = core.detemppwd(admpwd)
+                keyfile = core.decrypt(password)        
+                pyAesCrypt.encryptFile(filetemp, filename, keyfile, bufferSize) 
+                
+
+                self.lineProject.setText("")
+                self.lineUsername.setText("")
+                self.linePassword.setText("")
+                self.lineNotes.setText("")
+                core.sessioncheck()
+                self.repaint()
+        except:            
+
+            self.repaint()
+            core.sessioncheck()
+        self.close()
+        return None

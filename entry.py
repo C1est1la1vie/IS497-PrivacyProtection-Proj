@@ -45,7 +45,7 @@ class CoreUI(QMainWindow):
         self.timer.timeout.connect(self.updateFrame)
 
         # 报警系统
-        self.alarmSignalThreshold = 6
+        self.alarmSignalThreshold = 10
         self.panalarmThread = threading.Thread(target=self.recieveAlarm, daemon=True)
         self.isBellEnabled = True
 
@@ -56,7 +56,7 @@ class CoreUI(QMainWindow):
 
         self.startWebcam()
         self.isBellEnabled = True
-        self.timeThreshold = 3
+        self.timeThreshold = 6
 
     # 检查数据库状态
     def initDb(self):

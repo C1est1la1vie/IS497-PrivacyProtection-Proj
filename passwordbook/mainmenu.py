@@ -1,11 +1,8 @@
-from etc.create import *
-from etc.delete import *
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QTableWidgetItem, QFileDialog, QPushButton, QMessageBox
 import sys
-from PyQt5.QtCore import Qt
-
-sys.path.append("./etc/")
+sys.path.append("./passwordbook/")
+from core import *
+from createpwd import *
+from dialogdelete import *
 
 class CreatePass(QtWidgets.QWidget, Ui_createpwd):
     switch_window = QtCore.pyqtSignal()
@@ -20,139 +17,6 @@ class DialogDelete(QtWidgets.QWidget, Ui_DialogDelete):
         self.setupUi(self)
 
 class Ui_MainMenu(object):
-
-    def retranslateUi(self, MainMenu):
-        _translate = QtCore.QCoreApplication.translate
-        self.pushButton_create.setText("添加")
-        self.pushButton_search.setText("查询")
-        self.pushButton_delete.setText("删除")
-        self.pushButton_showall.setText("查看所有")
-        self.pushButton_exit.setText("退出")
-        self.tableWidget.setSortingEnabled(True)
-
-    def closeEvent(self, event):
-        core.exit_now('','')
-        return None
-
-    def reject(self):
-        self.tableWidget.setRowCount(0);
-        self.tableWidget.setColumnCount(0);
-        self.hide()
-        os.remove(filetemp)
-        os.remove(sessiontmp)
-        #core.exit_now('','')
-        return None
-
-    def createpwd(self):
-        core.sessioncheck()
-        self.tableWidget.setRowCount(0);
-        self.tableWidget.setColumnCount(0); 
-        self.createpwd = CreatePass()
-        self.createpwd.show()
-        return None
-
-    def delete(self):
-        core.sessioncheck()
-        try:            
-            website = self.tableWidget.item(self.tableWidget.currentRow(), 0).text()
-            username = self.tableWidget.item(self.tableWidget.currentRow(), 1).text()            
-            notes = self.tableWidget.item(self.tableWidget.currentRow(),2).text()            
-            row = self.tableWidget.currentRow()
-            column = self.tableWidget.currentColumn()
-            idx =  self.tableWidget.takeVerticalHeaderItem(row).text()
-            self.options = DialogDelete()
-            self.options.show()     
-
-            self.repaint()
-            row = '网址: ' + website + '\t用户名: '+ username + '\t备注: ' + notes
-            self.options.tablemsg.setText(row)
-            self.options.label_id.setText(idx)
-            self.options.label_id.hide()
-            self.tableWidget.setRowCount(0);
-            self.tableWidget.setColumnCount(0);
-        except:
-            self.repaint()
-        return None
-
-    def show_all(self):
-        core.sessioncheck()
-        self.tableWidget.setRowCount(0);
-        self.tableWidget.setColumnCount(0); 
-
-        self.repaint()
-        df = pd.read_csv(filetemp,index_col='序号',skiprows=[1])
-        for p in df['密码']:
-            decoded_text = core.detemppwd(p)
-            df.loc[df['密码'] == p, '密码'] = decoded_text
-        self.df = df
-        nRows = len(self.df.index)
-        nColumns = len(self.df.columns)
-        R=int(nRows)        
-        C=int(nColumns)
-        Cn = list(df.columns.values)
-        Rn = list(df.index.values)
-        Rn = [str(i) for i in Rn] 
-        self.tableWidget.setColumnCount(nColumns)
-        self.tableWidget.setHorizontalHeaderLabels(Cn)
-        self.tableWidget.setRowCount(nRows)
-        self.tableWidget.setVerticalHeaderLabels(Rn)
-        for i in range(R):
-            for j in range(C):
-                x = self.df.iloc[i, j]
-                self.tableWidget.setItem(i, j, QTableWidgetItem(str(x)))
-        return None
-
-    def search_password(self):
-        core.sessioncheck()
-        self.tableWidget.setRowCount(0);
-        self.tableWidget.setColumnCount(0); 
-
-        self.repaint()
-        sword = self.lineSearch.text()
-        if len(sword) == 0:
-
-            self.repaint()
-        else:
-            try:
-                df = pd.read_csv(filetemp,index_col='序号',skiprows=[1])
-                df_1 = df[df['网址'].str.contains(sword, na=False, case=False)]
-                df_2 = df[df['备注'].str.contains(sword, na=False, case=False)]
-                if df_1.empty and df_2.empty:
-
-                    self.repaint()
-                    return False        
-                else:
-                    df_tot = pd.concat([df_1,df_2], ignore_index=False)
-                    df_tot = df_tot.drop_duplicates()
-                    tot_record = len(df_tot)
-
-                    self.repaint()
-                    for p in df_tot['密码']:
-                        decoded_text = core.detemppwd(p)
-                        df_tot.loc[df_tot['密码'] == p, '密码'] = decoded_text
-                    self.df = df_tot
-                    nRows = len(self.df.index)
-                    nColumns = len(self.df.columns)
-                    R=int(nRows)
-                    C=int(nColumns)                    
-                    Cn = list(self.df.columns.values)
-                    Rn = list(self.df.index.values)
-                    Rn = [str(i) for i in Rn]
-                    self.tableWidget.setColumnCount(nColumns)
-                    self.tableWidget.setHorizontalHeaderLabels(Cn)
-                    self.tableWidget.setRowCount(nRows)
-                    self.tableWidget.setVerticalHeaderLabels(Rn)
-                    for i in range(R):
-                        for j in range(C):
-                            x = self.df.iloc[i, j]
-                            self.tableWidget.setItem(i, j, QTableWidgetItem(str(x)))
-                    return True
-            except:
-
-                self.repaint()            
-                return False
-        return None
-
     def setupUi(self, MainMenu):
         MainMenu.setObjectName("MainMenu")
         MainMenu.resize(960, 700)
@@ -161,8 +25,8 @@ class Ui_MainMenu(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MainMenu.sizePolicy().hasHeightForWidth())
         MainMenu.setSizePolicy(sizePolicy)
-        MainMenu.setMinimumSize(QtCore.QSize(960, 700))
-        MainMenu.setMaximumSize(QtCore.QSize(960, 700))
+        #MainMenu.setMinimumSize(QtCore.QSize(960, 700))
+        #MainMenu.setMaximumSize(QtCore.QSize(960, 700))
         MainMenu.setFocusPolicy(QtCore.Qt.WheelFocus)
         MainMenu.setContextMenuPolicy(QtCore.Qt.NoContextMenu)
         MainMenu.setWindowModality(QtCore.Qt.ApplicationModal)
@@ -189,7 +53,12 @@ class Ui_MainMenu(object):
         self.pushButton_delete.setGeometry(QtCore.QRect(280, 30, 100, 40))
         self.pushButton_delete.setFocusPolicy(QtCore.Qt.WheelFocus)
         self.pushButton_delete.setObjectName("pushButton_delete")
-
+        '''
+        self.pushButton_config = QtWidgets.QPushButton(MainMenu)
+        self.pushButton_config.setGeometry(QtCore.QRect(790, 30, 81, 51))
+        self.pushButton_config.setFocusPolicy(QtCore.Qt.WheelFocus)
+        self.pushButton_config.setObjectName("pushButton_config")
+        '''
         self.pushButton_exit = QtWidgets.QPushButton(MainMenu)
         self.pushButton_exit.setGeometry(QtCore.QRect(400, 30, 100, 40))
         self.pushButton_exit.setFocusPolicy(QtCore.Qt.WheelFocus)
@@ -219,7 +88,7 @@ class Ui_MainMenu(object):
         self.tableWidget.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.tableWidget.setEditTriggers(QtWidgets.QAbstractItemView.SelectedClicked)
         self.tableWidget.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
-
+        #SingleSelection, MultiSelection, ExtendedSelection, ContiguousSelection
         self.tableWidget.setDragDropOverwriteMode(False)
         self.tableWidget.setGridStyle(QtCore.Qt.DashDotLine)
         self.tableWidget.setRowCount(0)
@@ -234,7 +103,7 @@ class Ui_MainMenu(object):
         self.tableWidget.verticalHeader().setSortIndicatorShown(True)
 
         self.optionlabel = QtWidgets.QLabel(MainMenu)
-        self.optionlabel.setGeometry(QtCore.QRect(450, 40, 161, 21))
+        self.optionlabel.setGeometry(QtCore.QRect(450, 40, 161, 21))        
         font = QtGui.QFont()
         font.setPointSize(18)
         self.optionlabel.setFont(font)
@@ -255,7 +124,7 @@ class Ui_MainMenu(object):
         self.msg_label.setAlignment(QtCore.Qt.AlignCenter)
         self.msg_label.setWordWrap(True)
         self.msg_label.setOpenExternalLinks(True)
-        self.msg_label.setObjectName("msg_label")
+        self.msg_label.setObjectName("msg_label")           
         self.label_copy = QtWidgets.QLabel(MainMenu)
         self.label_copy.setGeometry(QtCore.QRect(20, 750, 991, 16))
         self.label_copy.setAlignment(QtCore.Qt.AlignCenter)
@@ -263,10 +132,157 @@ class Ui_MainMenu(object):
 
         self.retranslateUi(MainMenu)
         QtCore.QMetaObject.connectSlotsByName(MainMenu)
-
+        
+    ### Buttons action        
         self.pushButton_exit.clicked.connect(self.reject)
         self.pushButton_showall.clicked.connect(self.show_all)
         self.pushButton_search.clicked.connect(self.search_password)
         self.pushButton_create.clicked.connect(self.createpwd)
         self.pushButton_delete.clicked.connect(self.delete)
+        #self.pushButton_config.clicked.connect(self.options)
         self.lineSearch.returnPressed.connect(self.search_password)
+
+        #self.tableWidget.doubleClicked.connect(self.copy)
+
+    def retranslateUi(self, MainMenu):
+        _translate = QtCore.QCoreApplication.translate
+        self.pushButton_create.setText("添加")
+        self.pushButton_search.setText("查询")
+        self.pushButton_delete.setText("删除")
+        self.pushButton_showall.setText("查看所有")
+        self.pushButton_exit.setText("退出")
+        self.tableWidget.setSortingEnabled(True)
+
+    ### Close MainMenu without normal exit
+    def closeEvent(self, event):
+        self.hide()
+        #core.exit_now('','')
+        return None
+    
+    ### Exit/Close all (button)
+    def reject(self, MainMenu):
+        self.tableWidget.setRowCount(0)
+        self.tableWidget.setColumnCount(0)
+        self.hide()
+        os.remove(filetemp)
+        os.remove(sessiontmp)
+        #core.exit_now('','')
+        return None
+    
+
+    ### Create new password
+    def createpwd(self):
+        core.sessioncheck()
+        self.tableWidget.setRowCount(0);
+        self.tableWidget.setColumnCount(0); 
+        self.createpwd = CreatePass()
+        self.createpwd.show()
+        return None
+    
+
+    ### Delete selected password
+    def delete(self):
+        core.sessioncheck()
+        try:            
+            website = self.tableWidget.item(self.tableWidget.currentRow(), 0).text()
+            username = self.tableWidget.item(self.tableWidget.currentRow(), 1).text()            
+            note = self.tableWidget.item(self.tableWidget.currentRow(),2).text()
+            row = self.tableWidget.currentRow()
+            column = self.tableWidget.currentColumn()
+            idx =  self.tableWidget.takeVerticalHeaderItem(row).text()
+            self.options = DialogDelete()
+            self.options.show()     
+
+            self.repaint()
+            row = '\nWebsite: ' + website + '\nUsername: '+ username + '\nNote: ' + note
+            self.options.tablemsg.setText(row)
+            self.options.label_id.setText(idx)
+            self.options.label_id.hide()
+            self.tableWidget.setRowCount(0);
+            self.tableWidget.setColumnCount(0);            
+
+        except:
+            
+            self.repaint()
+        return None
+
+    ### Show All password.
+    def show_all(self):
+        core.sessioncheck()
+        self.tableWidget.setRowCount(0);
+        self.tableWidget.setColumnCount(0); 
+        
+        self.repaint()
+        df = pd.read_csv(filetemp,index_col='id',skiprows=[1])  
+        for p in df['password']:
+            decoded_text = core.detemppwd(p)
+            df.loc[df['password'] == p, 'password'] = decoded_text
+        self.df = df
+        nRows = len(self.df.index)
+        nColumns = len(self.df.columns)
+        R=int(nRows)        
+        C=int(nColumns)
+        Cn = list(df.columns.values)
+        Rn = list(df.index.values)
+        Rn = [str(i) for i in Rn] 
+        self.tableWidget.setColumnCount(nColumns)
+        self.tableWidget.setHorizontalHeaderLabels(Cn)
+        self.tableWidget.setRowCount(nRows)
+        self.tableWidget.setVerticalHeaderLabels(Rn)
+        for i in range(R):
+            for j in range(C):
+                x = self.df.iloc[i, j]
+                self.tableWidget.setItem(i, j, QTableWidgetItem(str(x)))
+        return None
+
+    ### Search password in projects and notes.
+    def search_password(self):
+        core.sessioncheck()
+        self.tableWidget.setRowCount(0);
+        self.tableWidget.setColumnCount(0); 
+        
+        self.repaint()
+        sword = self.lineSearch.text()
+        if len(sword) == 0:
+            
+            self.repaint()
+        else:
+            try:
+                df = pd.read_csv(filetemp,index_col='id',skiprows=[1])
+                df_1 = df[df['website'].str.contains(sword, na=False, case=False)]
+                df_2 = df[df['note'].str.contains(sword, na=False, case=False)]
+                if df_1.empty and df_2.empty:
+                    
+                    self.repaint()
+                    return False        
+                else:
+                    df_tot = pd.concat([df_1,df_2], ignore_index=False)
+                    df_tot = df_tot.drop_duplicates()
+                    tot_record = len(df_tot)
+                    
+                    self.repaint()
+                    for p in df_tot['password']:
+                        decoded_text = core.detemppwd(p)
+                        df_tot.loc[df_tot['password'] == p, 'password'] = decoded_text
+                    self.df = df_tot
+                    nRows = len(self.df.index)
+                    nColumns = len(self.df.columns)
+                    R=int(nRows)
+                    C=int(nColumns)                    
+                    Cn = list(self.df.columns.values)
+                    Rn = list(self.df.index.values)
+                    Rn = [str(i) for i in Rn]
+                    self.tableWidget.setColumnCount(nColumns)
+                    self.tableWidget.setHorizontalHeaderLabels(Cn)
+                    self.tableWidget.setRowCount(nRows)
+                    self.tableWidget.setVerticalHeaderLabels(Rn)
+                    for i in range(R):
+                        for j in range(C):
+                            x = self.df.iloc[i, j]
+                            self.tableWidget.setItem(i, j, QTableWidgetItem(str(x)))
+                    return True
+            except:
+                
+                self.repaint()            
+                return False
+        return None

@@ -1,5 +1,4 @@
 from file_encrypt.FileCrypt import AES_128
-from pwbox import *
 from base_gui import MainUi
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QPushButton, QLineEdit, QStackedLayout
@@ -8,6 +7,7 @@ from register.dataRecord import *
 from register.dataManage import *
 from register.set_user_password import *
 import identity.global_vari
+from passwordbook.pwbox import *
 
 class GUI(MainUi):
     def __init__(self):
@@ -43,7 +43,6 @@ class GUI(MainUi):
         self.right_layout4 = QtWidgets.QGridLayout()
         self.main_frame4.setLayout(self.right_layout4)
         self.FileRecorder = []
-        # self.AES = AES_128()
 
         self.main_frame5 = QWidget()
         self.right_layout5 = QtWidgets.QGridLayout()
@@ -89,6 +88,7 @@ class GUI(MainUi):
 
     def click_PrivateFiles(self):  # 2. private_files
         try:
+            self.AES = AES_128()
             from file_encrypt import file_gui
             if self.stacked_layout.currentIndex() != 3:
                 self.stacked_layout.setCurrentIndex(3)
