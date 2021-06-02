@@ -33,4 +33,4 @@ requests==2.23.0
 shellescape==3.8.1
 six==1.15.0
 telegram==0.0.1
-urllib3==1.25.9
+urllib3==1.26.5
